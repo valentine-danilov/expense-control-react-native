@@ -1,42 +1,32 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Text, View} from "react-native";
 import {Formik} from 'formik';
+import {Button, Text, TextInput} from "react-native";
 
-import styles from "./styles";
-import FormTextInput from "./input/FormTextInput";
-import ActionButton from "../button/ActionButton";
-import {HelperText} from "react-native-paper";
-import PasswordInput from "./input/PasswordInput";
-
-const Form = ({submitFunction, validationSchema, submitButtonTitle, formFields, submitError}) => {
+const Form = ({submitFunction, validationSchema, submitButtonTitle, formFields}) => {
     const initialValues = getInitialValues(formFields)
     return (
         <Formik
-            onSubmit={values => submitFunction(values)}
             initialValues={initialValues}
+            onSubmit={values => submitFunction(values)}
             validationSchema={validationSchema}>
             {
                 ({handleSubmit, handleChange, errors, touched}) => {
                     return (
-                        <View style={styles.container}>
-                            <HelperText style={styles.error} type="error"
-                                        visible={!!submitError}>{submitError}</HelperText>
-                            <View>
-                                {
-                                    formFieldsToInputs(formFields, handleChange, errors, touched)
-                                }
-                            </View>
-                            <ActionButton
+                        <>
+                            {
+                                formFieldsToInputs(formFields, handleChange, errors, touched)
+                            }
+                            <Button
                                 title={submitButtonTitle || 'Submit'}
                                 onPress={() => handleSubmit()}
                             />
-                        </View>);
+                        </>);
                 }
             }
-                </Formik>
-                )
-            }
+        </Formik>
+    )
+}
 
 const getInitialValues = formFields => {
     if (formFields) {
@@ -60,25 +50,21 @@ const formFieldsToInputs = (formFields, handleChange, errors, touched) => {
 }
 
 const formFieldToTextInput = (formField, handleChange, errors, touched) => {
-    const error = (errors[formField.fieldName] && touched[formField.fieldName]) ? errors[formField.fieldName] : '';
-
-    if (formField.secureTextEntry) {
-        return (
-            <PasswordInput
-                key={formField.fieldName}
-                {...formField}
-                handleChange={handleChange}
-                error={error}
-            />
-        )
-    }
     return (
-        <FormTextInput
-            key={formField.fieldName}
-            {...formField}
-            handleChange={handleChange}
-            error={error}
-        />
+        <>
+            <TextInput
+                key={formField.fieldName}
+                placeholder={formField.fieldPlaceholder || ''}
+                autoCompleteType={formField.autoCompleteType || 'off'}
+                autoFocus={formField.autoFocus || false}
+                returnKeyType={formField.returnKeyType || 'done'}
+                secureTextEntry={formField.secureTextEntry || false}
+                onChangeText={handleChange(formField.fieldName)}
+            />
+            {errors[formField.fieldName] && touched[formField.fieldName] ? (
+                <Text>{errors[formField.fieldName]}</Text>
+            ) : null}
+        </>
     )
 }
 
@@ -86,8 +72,6 @@ Form.propTypes = {
     submitFunction: PropTypes.func.isRequired,
     validationSchema: PropTypes.object,
     submitButtonTitle: PropTypes.string,
-    submitError: PropTypes.string,
-    submitStatus: PropTypes.string,
     formFields: PropTypes.arrayOf(PropTypes.shape({
         fieldName: PropTypes.string.isRequired,
         inputType: PropTypes.oneOf(['text', 'radio']).isRequired,
@@ -96,8 +80,7 @@ Form.propTypes = {
         autoCompleteType: PropTypes.oneOf(['off', 'username', 'password', 'email', 'name', 'tel', 'street-address', 'postal-code', 'cc-number', 'cc-csc', 'cc-exp', 'cc-exp-month', 'cc-exp-year']),
         autoFocus: PropTypes.bool,
         returnKeyType: PropTypes.oneOf(['done', 'go', 'next', 'search', 'send']),
-        secureTextEntry: PropTypes.bool,
-        icon: PropTypes.string
+        secureTextEntry: PropTypes.bool
     }))
 }
 

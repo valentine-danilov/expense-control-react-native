@@ -1,11 +1,13 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import {doAuthenticate} from '../../../service/auth/auth.client'
-
-
+import {doAuthenticate, doSignUp} from '../../../service/auth/auth.client'
 
 export const signIn = createAsyncThunk('auth/signIn', async ({username, password}) => {
-    console.log(username, password)
     return await doAuthenticate(username, password);
+})
+
+export const signUp = createAsyncThunk('auth/singUp', async ({firstName, lastName, login, email, password}) => {
+    console.log("SIGN UP", login)
+    return await doSignUp({firstName, lastName, login, email, password});
 })
 
 export const authSlice = createSlice({
@@ -17,9 +19,6 @@ export const authSlice = createSlice({
         error: null
     },
     reducers: {
-        signUp: (state, action) => {
-
-        },
         logOut: (state, action) => {
             state.loggedIn = false
             state.token = null
@@ -32,14 +31,14 @@ export const authSlice = createSlice({
         },
         [signIn.fulfilled]: (state, action) => {
             const error = action.payload.error
-            if (!error) {
+            if (error) {
                 state.status = 'failed'
                 state.error = error
             } else {
                 state.status = 'succeeded'
                 state.loggedIn = true
                 state.token = action.payload.token
-                console.log('SIGN IN FULLFILLED :: ', action.payload)
+                console.log('success')
             }
         },
         [signIn.rejected]: (state, action) => {
@@ -49,5 +48,5 @@ export const authSlice = createSlice({
     }
 })
 
-export const {signUp, logOut} = authSlice.actions
+export const {logOut} = authSlice.actions
 export default authSlice.reducer

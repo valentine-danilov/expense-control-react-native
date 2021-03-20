@@ -1,34 +1,63 @@
-import React, {useEffect} from 'react'
-import {useSelector, useDispatch} from "react-redux";
-import {View, Text, TextInput, Button} from 'react-native'
-import t from 'tcomb-form-native'
+import React, {useState} from 'react'
+import Form from '../common/form/Form'
+import * as Yup from 'yup'
+import {useDispatch, useSelector} from "react-redux";
 import {signIn} from '../../storage/auth/slice/auth.slice'
+import {Text} from "react-native";
 
-const Form = t.form.Form
-const SignInFormType = t.struct({
-    email: t.String,
-    password: t.String
+const SignInSchema = Yup.object().shape({
+    login: Yup.string()
+        .min(1, 'Last name is too short')
+        .max(70, 'Last name is too long')
+        .required('Field is required'),
+    password: Yup.string()
+        .matches(/[A-Za-z0-9]{2,50}/)
+        .required('Field is required')
 })
 
-const SignInForm = () => {
-    const dispatch = useDispatch();
-    //const status = useSelector(state => state.status)
-
-    let formValue;
-    const handleSubmit = () => {
-        const value = formValue.getValue();
-        dispatch(signIn({
-            username: value.email,
-            password: value.password
-        }))
-    }
-
-    return (
-        <View>
-            <Form ref={value => formValue = value} type={SignInFormType}/>
-            <Button title="Sign In" onPress={handleSubmit}/>
-        </View>
-    )
+const signInFormConfiguration = {
+    validationSchema: SignInSchema,
+    submitButtonTitle: 'Sign in',
+    formFields: [
+        {
+            fieldName: 'login',
+            inputType: 'text',
+            fieldPlaceholder: 'Login',
+            autoFocus: true,
+        },
+        {
+            fieldName: 'password',
+            inputType: 'text',
+            fieldPlaceholder: 'Password',
+            secureTextEntry: true
+        }
+    ]
 }
 
+const SignInForm = props => {
+
+    const status = useSelector(state => state.auth.status);
+    const error = useSelector(state => state.auth.error);
+
+    const dispatch = useDispatch();
+
+    signInFormConfiguration.submitFunction = values => {
+        dispatch(signIn({
+            username: values.login,
+            password: values.password
+        }))
+    };
+
+    return (
+        <>
+            {(status === 'failed') ? (
+                <Text>{error || 'Something went wrong ;('}</Text>
+            ) : null}
+            <Form {...signInFormConfiguration}/>
+        </>
+)
+}
+
+
 export default SignInForm;
+
