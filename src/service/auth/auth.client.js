@@ -9,3 +9,8 @@ export const doAuthenticate = async (username, password) => {
         error: "Invalid username or password"
     })
 }
+
+export const doSignUp = async ({firstName, lastName, login, email, password}) => {
+    console.log('DO SIGN UP :: ', {firstName, lastName, login, email, password})
+    return Promise.resolve({firstName})
+}
