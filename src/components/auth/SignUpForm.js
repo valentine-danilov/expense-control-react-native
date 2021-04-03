@@ -1,7 +1,7 @@
 import React from 'react'
 import Form from '../common/form/Form'
 import * as Yup from 'yup'
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {signUp} from '../../storage/auth/slice/auth.slice'
 
 const SignUpSchema = Yup.object().shape({
@@ -70,6 +70,7 @@ const signUpFormConfiguration = {
 const SignUpForm = props => {
 
     const dispatch = useDispatch();
+    const status = useSelector(state => state.auth.status);
 
     signUpFormConfiguration.submitFunction = values => {
         console.log(values)
@@ -81,6 +82,7 @@ const SignUpForm = props => {
             password: values.password
         }))
     };
+    signUpFormConfiguration.submitStatus = status
 
     return (
         <Form {...signUpFormConfiguration}/>

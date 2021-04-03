@@ -25,28 +25,36 @@ export const authSlice = createSlice({
         }
     },
     extraReducers: {
-        [signIn.pending]: (state, action) => {
-            console.log(state)
-            state.status = 'loading'
-        },
-        [signIn.fulfilled]: (state, action) => {
-            const error = action.payload.error
-            if (error) {
-                state.status = 'failed'
-                state.error = error
-            } else {
-                state.status = 'succeeded'
-                state.loggedIn = true
-                state.token = action.payload.token
-                console.log('success')
-            }
-        },
-        [signIn.rejected]: (state, action) => {
-            state.status = 'failed'
-            state.error = action.error.message
-        }
+        [signIn.pending]: (state, action) => handleLoading(state),
+        [signIn.fulfilled]: (state, action) => handleFulfilled(state, action),
+        [signIn.rejected]: (state, action) => handleRejected(state, action),
+        [signUp.pending]: (state, action) => handleLoading(state),
+        [signUp.fulfilled]: (state, action) => handleFulfilled(state, action),
+        [signUp.rejected]: (state, action) => handleRejected(state, action)
     }
 })
+
+const handleLoading = state => {
+    state.status = 'loading'
+}
+
+const handleFulfilled = (state, action) => {
+    const error = action.payload.error
+    if (error) {
+        state.status = 'failed'
+        state.error = error
+    } else {
+        state.status = 'succeeded'
+        state.loggedIn = true
+        state.token = action.payload.token
+        console.log('success')
+    }
+}
+
+const handleRejected = (state, action) => {
+    state.status = 'failed'
+    state.error = action.error.message
+}
 
 export const {logOut} = authSlice.actions
 export default authSlice.reducer

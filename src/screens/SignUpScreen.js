@@ -1,13 +1,15 @@
 import * as React from 'react';
-import {View, Button} from 'react-native';
+import {View} from 'react-native';
 import SignUpForm from "../components/auth/SignUpForm";
+import {styles} from "./Screen.styles";
+import ActionButton from "../components/common/button/ActionButton";
 
 
 const SignUpScreen = ({navigation}) => {
     return (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <View style={styles.container}>
             <SignUpForm/>
-            <Button title="Already have an account? Sign In now" onPress={() => navigation.navigate('Sign In')}/>
+            <ActionButton title="Already have an account? Sign In now" onPress={() => navigation.navigate('Sign In')}/>
         </View>
     )
 }

@@ -47,15 +47,11 @@ const SignInForm = props => {
             password: values.password
         }))
     };
+    signInFormConfiguration.submitError = (status === 'failed') ? (error || 'Something went wrong ;(') : ''
+    signInFormConfiguration.submitStatus = status;
 
-    return (
-        <>
-            {(status === 'failed') ? (
-                <Text>{error || 'Something went wrong ;('}</Text>
-            ) : null}
-            <Form {...signInFormConfiguration}/>
-        </>
-)
+    console.log('SIGN IN RENDER: ', status)
+    return <Form {...signInFormConfiguration}/>
 }
 
 
