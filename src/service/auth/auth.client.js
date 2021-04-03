@@ -1,5 +1,3 @@
-import {animationTimeout} from "../animation/animation.service";
-
 export const doAuthenticate = (username, password) => {
     console.log(`DO AUTH :: ${username} ${password}`)
     if (username === 'admin' && password === 'admin') {

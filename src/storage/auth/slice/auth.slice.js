@@ -22,7 +22,11 @@ export const authSlice = createSlice({
     },
     extraReducers: {
         [signIn.pending]: (state, action) => handleLoading(state),
-        [signIn.fulfilled]: (state, action) => handleFulfilled(state, action),
+        [signIn.fulfilled]: (state, action) => {
+            handleFulfilled(state, action)
+            state.loggedIn = true
+            state.token = action.payload.token
+        },
         [signIn.rejected]: (state, action) => handleRejected(state, action),
     }
 })

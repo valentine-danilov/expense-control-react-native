@@ -9,9 +9,6 @@ export const handleFulfilled = (state, action) => {
         state.error = error
     } else {
         state.status = 'succeeded'
-        state.loggedIn = true
-        state.token = action.payload.token
-        console.log('success')
     }
 }
 
