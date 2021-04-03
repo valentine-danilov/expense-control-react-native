@@ -8,17 +8,6 @@ export default StyleSheet.create({
         marginBottom: 15,
         position: 'relative',
     },
-    activityIndicatorContainer: {
-        position: 'absolute',
-        flex: 1,
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        justifyContent: 'center',
-        alignItems: 'center',
-        zIndex: 2,
-    },
     error: {
         marginBottom: 15,
         color: 'red',

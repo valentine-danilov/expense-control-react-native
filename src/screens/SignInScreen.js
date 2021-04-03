@@ -1,39 +1,33 @@
-import * as React from 'react';
-import {View, KeyboardAvoidingView, ActivityIndicator, Animated} from 'react-native';
-import SignInForm from "../components/auth/SignInForm";
-import {styles} from "./Screen.styles";
-import ActionButton from "../components/common/button/ActionButton";
+import React, {useEffect, useState} from "react";
+import {Animated} from 'react-native';
 import {useSelector} from "react-redux";
-import {useState} from "react";
-import {fadeIn, fadeOut} from "../service/animation/animation.service";
+
+import SignInForm from "../components/auth/sign-in/SignInForm";
+import DefaultActivityIndicator from "../components/common/activity-indicator/DefaultActivityIndicator";
+import Styles from "./styles";
+import ActionButton from "../components/common/button/ActionButton";
+import {isSubmitting, manageFade} from "../util/common.util";
 
 const SignInScreen = ({navigation}) => {
     const status = useSelector(state => state.auth.status);
-
+    const error = useSelector(state => state.auth.error)
     const [opacity] = useState(new Animated.Value(1))
 
-    if (isSubmitting(status)) {
-        fadeOut(opacity)
-    }
+    manageFade(status, opacity)
 
-    if (!isSubmitting(status)) {
-        fadeIn(opacity)
-    }
+    useEffect(() => {
+        if (status === 'succeeded') {
+            navigation.navigate('Home')
+        }
+    })
 
     return (
-        <Animated.View style={[styles.container, {opacity}]} pointerEvents={isSubmitting(status) ? 'none' : 'auto'}>
-            {isSubmitting(status) && (
-                <View style={styles.activityIndicatorContainer}>
-                    <ActivityIndicator size="large" color="#3F5EFB"/>
-                </View>
-            )}
-            <SignInForm/>
+        <Animated.View style={[Styles.container, {opacity}]} pointerEvents={isSubmitting(status) ? 'none' : 'auto'}>
+            {isSubmitting(status) && <DefaultActivityIndicator/>}
+            <SignInForm status={status} error={error}/>
             <ActionButton title="Don't have an account? Sign Up now!" onPress={() => navigation.navigate('Sign Up')}/>
         </Animated.View>
     )
 }
-
-const isSubmitting = status => status === 'loading'
-
 
 export default SignInScreen;
