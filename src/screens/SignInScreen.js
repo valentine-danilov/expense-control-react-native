@@ -7,20 +7,21 @@ import DefaultActivityIndicator from "../components/common/activity-indicator/De
 import Styles from "./styles";
 import ActionButton from "../components/common/button/ActionButton";
 import {isSubmitting, manageFade} from "../util/common.util";
+import STATUS from '../util/status.util'
 
 const SignInScreen = ({navigation}) => {
-    const status = useSelector(state => state.auth.status);
-    const error = useSelector(state => state.auth.error)
-    const username = useSelector(state => state.auth.username)
+    const status = useSelector(state => state.auth.signIn.status);
+    const error = useSelector(state => state.auth.signIn.error)
+    const username = useSelector(state => state.auth.user.username)
     const [opacity] = useState(new Animated.Value(1))
 
     manageFade(status, opacity)
 
     useEffect(() => {
-        if (status === 'succeeded') {
+        if (status === STATUS.SUCCEEDED) {
             navigation.navigate('Home')
         }
-        if (status === 'not-confirmed'){
+        if (status === STATUS.USER_NOT_CONFIRMED){
             navigation.navigate('Email verification', {username: username})
         }
     })

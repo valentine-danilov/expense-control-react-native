@@ -1,27 +1,34 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import {Text, View} from "react-native";
 import {Formik} from 'formik';
-import {Button, Text, TextInput} from "react-native";
 
-const Form = ({submitFunction, validationSchema, submitButtonTitle, formFields}) => {
+import styles from "./styles";
+import FormTextInput from "./input/FormTextInput";
+import ActionButton from "../button/ActionButton";
+
+const Form = ({submitFunction, validationSchema, submitButtonTitle, formFields, submitError}) => {
     const initialValues = getInitialValues(formFields)
     return (
         <Formik
-            initialValues={initialValues}
             onSubmit={values => submitFunction(values)}
+            initialValues={initialValues}
             validationSchema={validationSchema}>
             {
                 ({handleSubmit, handleChange, errors, touched}) => {
                     return (
-                        <>
-                            {
-                                formFieldsToInputs(formFields, handleChange, errors, touched)
-                            }
-                            <Button
+                        <View style={styles.container}>
+                            <Text style={styles.error}>{submitError}</Text>
+                            <View>
+                                {
+                                    formFieldsToInputs(formFields, handleChange, errors, touched)
+                                }
+                            </View>
+                            <ActionButton
                                 title={submitButtonTitle || 'Submit'}
                                 onPress={() => handleSubmit()}
                             />
-                        </>);
+                        </View>);
                 }
             }
         </Formik>
@@ -50,21 +57,14 @@ const formFieldsToInputs = (formFields, handleChange, errors, touched) => {
 }
 
 const formFieldToTextInput = (formField, handleChange, errors, touched) => {
+    const error = (errors[formField.fieldName] && touched[formField.fieldName]) ? errors[formField.fieldName] : '';
     return (
-        <>
-            <TextInput
-                key={formField.fieldName}
-                placeholder={formField.fieldPlaceholder || ''}
-                autoCompleteType={formField.autoCompleteType || 'off'}
-                autoFocus={formField.autoFocus || false}
-                returnKeyType={formField.returnKeyType || 'done'}
-                secureTextEntry={formField.secureTextEntry || false}
-                onChangeText={handleChange(formField.fieldName)}
-            />
-            {errors[formField.fieldName] && touched[formField.fieldName] ? (
-                <Text>{errors[formField.fieldName]}</Text>
-            ) : null}
-        </>
+        <FormTextInput
+            key={formField.fieldName}
+            {...formField}
+            handleChange={handleChange}
+            error={error}
+        />
     )
 }
 
@@ -72,6 +72,8 @@ Form.propTypes = {
     submitFunction: PropTypes.func.isRequired,
     validationSchema: PropTypes.object,
     submitButtonTitle: PropTypes.string,
+    submitError: PropTypes.string,
+    submitStatus: PropTypes.string,
     formFields: PropTypes.arrayOf(PropTypes.shape({
         fieldName: PropTypes.string.isRequired,
         inputType: PropTypes.oneOf(['text', 'radio']).isRequired,
