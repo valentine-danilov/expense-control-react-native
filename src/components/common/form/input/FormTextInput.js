@@ -6,7 +6,6 @@ const FormTextInput = ({fieldName, fieldPlaceholder, autoCompleteType, autoFocus
     <View style={styles.inputContainer}>
         <TextInput
             style={styles.input}
-            key={fieldName}
             placeholder={fieldPlaceholder || ''}
             autoCompleteType={autoCompleteType || 'off'}
             autoFocus={autoFocus || false}

@@ -1,27 +1,24 @@
 import Auth from '@aws-amplify/auth';
 
 export const doVerify = async ({username, code}) => {
-    let response = await Auth.confirmSignUp(username, code);
-    console.log(response);
-    return response;
+    return await Auth.confirmSignUp(username, code);
 }
 
-
-export const doAuthenticate = async (username, password) => {
-    console.log(`DO AUTH :: ${username} ${password}`)
-
-try {
-    let response = await Auth.signIn(username, password);
-    console.log(response)
-    if (response.signInUserSession) {
-        return { token: response.signInUserSession.accessToken.jwtToken }
-    }
-} catch(err) {
+export const doAuthenticate = async ({username, password}) => {
+    try {
+        let response = await Auth.signIn(username, password);
+        if (response.signInUserSession) {
+            return {token: response.signInUserSession.accessToken.jwtToken, user: {}}
+        }
+    } catch (err) {
         console.log(err)
-    return { error: err.message, username }
-}
-
-
+        return {
+            error: err,
+            user: {
+                username
+            }
+        }
+    }
 }
 
 /*export const doAuthenticate = async (username, password) => {
@@ -40,6 +37,10 @@ try {
 }*/
 
 export const doSignUp = async ({firstName, lastName, login, email, password}) => {
-    let response = await Auth.signUp({ 'username': login, 'password': password, 'attributes': { 'email': email }})
-    return { confirmationDestination: response.codeDeliveryDetails.Destination, username: response.user.getUsername() }
+    let response = await Auth.signUp({'username': login, 'password': password, 'attributes': {'email': email}})
+    console.log('SIGN UP :: ', response)
+    return {
+        confirmationDestination: response.codeDeliveryDetails.Destination,
+        username: response.user.getUsername()
+    }
 }

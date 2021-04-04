@@ -1,30 +1,18 @@
-import React, {useState} from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
+import {Text, View} from "react-native";
 import {Formik} from 'formik';
-import {Text, View, Animated, ActivityIndicator} from "react-native";
+
 import styles from "./styles";
 import FormTextInput from "./input/FormTextInput";
 import ActionButton from "../button/ActionButton";
-import {fadeIn, fadeOut} from "../../../service/animation/animation.service"
 
-const Form = ({submitFunction, validationSchema, submitButtonTitle, formFields, submitError, submitStatus}) => {
+const Form = ({submitFunction, validationSchema, submitButtonTitle, formFields, submitError}) => {
     const initialValues = getInitialValues(formFields)
-    const [opacity] = useState(new Animated.Value(1))
-
-    if (isSubmitting(submitStatus)) {
-        fadeOut(opacity)
-    }
-
-    if (!isSubmitting(submitStatus)) {
-        fadeIn(opacity)
-    }
-
     return (
         <Formik
+            onSubmit={values => submitFunction(values)}
             initialValues={initialValues}
-            onSubmit={values => {
-                submitFunction(values)
-            }}
             validationSchema={validationSchema}>
             {
                 ({handleSubmit, handleChange, errors, touched}) => {
@@ -72,14 +60,13 @@ const formFieldToTextInput = (formField, handleChange, errors, touched) => {
     const error = (errors[formField.fieldName] && touched[formField.fieldName]) ? errors[formField.fieldName] : '';
     return (
         <FormTextInput
+            key={formField.fieldName}
             {...formField}
             handleChange={handleChange}
             error={error}
         />
     )
 }
-
-const isSubmitting = status => status === 'loading'
 
 Form.propTypes = {
     submitFunction: PropTypes.func.isRequired,

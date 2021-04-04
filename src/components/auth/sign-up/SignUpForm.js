@@ -1,13 +1,13 @@
 import React from 'react'
 import Form from '../../common/form/Form'
-import {useDispatch, useSelector} from "react-redux";
-import {signUp} from '../../../storage/auth/slice/sign-up.slice'
 import config from "./config";
-const SignUpForm = ({status, error}) => {
+import {signUp} from "../../../storage/authentication/sign-up/thunk";
+import {useDispatch} from "react-redux";
+import STATUS from '../../../util/status.util'
 
+const SignUpForm = ({status, error}) => {
     const dispatch = useDispatch();
     config.submitFunction = values => {
-        console.log(values)
         dispatch(signUp({
             firstName: values.firstName,
             lastName: values.lastName,
@@ -16,13 +16,8 @@ const SignUpForm = ({status, error}) => {
             password: values.password
         }))
     };
-
-    config.submitError = (status === 'failed') ? (error || 'Something went wrong ;(') : ''
-    config.submitStatus = status
-
-    return (
-        <Form {...config}/>
-    )
+    config.submitError = (status === STATUS.FAILED) ? (error || 'Something went wrong ;(') : ''
+    return <Form {...config}/>
 }
 
 export default SignUpForm;
