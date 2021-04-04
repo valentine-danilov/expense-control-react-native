@@ -1,19 +1,21 @@
 import React from 'react'
 import Form from '../../common/form/Form'
+import {useDispatch, useSelector} from "react-redux";
+import {verifyCode} from '../../../storage/auth/slice/verification.slice'
 import config from "./config";
-import {useDispatch} from "react-redux";
-import {verifyCode} from "../../../storage/authentication/email-verification/thunk";
-import STATUS from '../../../util/status.util'
 
 const EmailVerificationForm = ({status, error, username}) => {
     const dispatch = useDispatch();
+
     config.submitFunction = values => {
-        dispatch(verifyCode({
-            code: values.code,
-            username: username
-        }))
+         dispatch(verifyCode({
+             code: values.code,
+             username: username
+         }))
     };
-    config.submitError = (status === STATUS.FAILED) ? (error || 'Something went wrong ;(') : ''
+    config.submitError = (status === 'failed') ? (error || 'Something went wrong ;(') : ''
+    config.submitStatus = status;
+
     return <Form {...config}/>
 }
 

@@ -1,13 +1,9 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import {doAuthenticate, doSignUp} from '../../../service/auth/auth.client'
+import {doAuthenticate} from '../../../service/auth/auth.client'
+import {handleLoading, handleRejected} from "../../../util/slice.util";
 
 export const signIn = createAsyncThunk('auth/signIn', async ({username, password}) => {
     return await doAuthenticate(username, password);
-})
-
-export const signUp = createAsyncThunk('auth/singUp', async ({firstName, lastName, login, email, password}) => {
-    console.log("SIGN UP", login)
-    return await doSignUp({firstName, lastName, login, email, password});
 })
 
 export const authSlice = createSlice({
@@ -16,7 +12,9 @@ export const authSlice = createSlice({
         loggedIn: false,
         token: null,
         status: 'idle',
-        error: null
+        error: null,
+        email: null,
+        username: null
     },
     reducers: {
         logOut: (state, action) => {
@@ -25,28 +23,27 @@ export const authSlice = createSlice({
         }
     },
     extraReducers: {
-        [signIn.pending]: (state, action) => {
-            console.log(state)
-            state.status = 'loading'
-        },
+        [signIn.pending]: (state, action) => handleLoading(state),
         [signIn.fulfilled]: (state, action) => {
-            const error = action.payload.error
-            if (error) {
-                state.status = 'failed'
-                state.error = error
-            } else {
-                state.status = 'succeeded'
-                state.loggedIn = true
-                state.token = action.payload.token
-                console.log('success')
-            }
+            handleFulfilled(state, action)
+            state.loggedIn = true
+            state.token = action.payload.token
+            state.username = action.payload.username
         },
-        [signIn.rejected]: (state, action) => {
-            state.status = 'failed'
-            state.error = action.error.message
-        }
+        [signIn.rejected]: (state, action) => handleRejected(state, action),
     }
 })
+
+export const handleFulfilled = (state, action) => {
+    const error = action.payload.error
+    if (error) {
+        state.status = 'not-confirmed'
+        state.error = error
+
+    } else {
+        state.status = 'succeeded'
+    }
+}
 
 export const {logOut} = authSlice.actions
 export default authSlice.reducer

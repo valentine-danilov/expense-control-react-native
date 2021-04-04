@@ -1,24 +1,22 @@
-import STATUS from './status.util'
-
-export const handleLoading = (state) => {
-    state.status = STATUS.LOADING;
+export const handleLoading = state => {
+    state.status = 'loading'
 }
 
-export const handleFulfilled = (state, prefix, action) => {
+export const handleFulfilled = (state, action) => {
     const error = action.payload.error
     if (error) {
-        state.status = STATUS.FAILED
-        state[prefix].error = error
+        state.status = 'failed'
+        state.error = error
 
     } else {
-        state[prefix].status = STATUS.SUCCEEDED
+        state.status = 'succeeded'
     }
 }
 
-export const handleRejected = (state, prefix, action) => {
-    state[prefix].status = STATUS.FAILED
+export const handleRejected = (state, action) => {
+    state.status = 'failed'
     if (action.error) {
-        state[prefix].error = action.error.message
+        state.error = action.error.message
         console.log(state.error)
     }
 }
