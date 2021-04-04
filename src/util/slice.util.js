@@ -7,6 +7,7 @@ export const handleFulfilled = (state, action) => {
     if (error) {
         state.status = 'failed'
         state.error = error
+
     } else {
         state.status = 'succeeded'
     }
@@ -14,5 +15,8 @@ export const handleFulfilled = (state, action) => {
 
 export const handleRejected = (state, action) => {
     state.status = 'failed'
-    state.error = action.error.message
+    if (action.error) {
+        state.error = action.error.message
+        console.log(state.error)
+    }
 }

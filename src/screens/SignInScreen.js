@@ -11,6 +11,7 @@ import {isSubmitting, manageFade} from "../util/common.util";
 const SignInScreen = ({navigation}) => {
     const status = useSelector(state => state.auth.status);
     const error = useSelector(state => state.auth.error)
+    const username = useSelector(state => state.auth.username)
     const [opacity] = useState(new Animated.Value(1))
 
     manageFade(status, opacity)
@@ -18,6 +19,9 @@ const SignInScreen = ({navigation}) => {
     useEffect(() => {
         if (status === 'succeeded') {
             navigation.navigate('Home')
+        }
+        if (status === 'not-confirmed'){
+            navigation.navigate('Email verification', {username: username})
         }
     })
 

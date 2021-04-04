@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import {doAuthenticate} from '../../../service/auth/auth.client'
-import {handleLoading, handleFulfilled, handleRejected} from "../../../util/slice.util";
+import {handleLoading, handleRejected} from "../../../util/slice.util";
 
 export const signIn = createAsyncThunk('auth/signIn', async ({username, password}) => {
     return await doAuthenticate(username, password);
@@ -12,7 +12,9 @@ export const authSlice = createSlice({
         loggedIn: false,
         token: null,
         status: 'idle',
-        error: null
+        error: null,
+        email: null,
+        username: null
     },
     reducers: {
         logOut: (state, action) => {
@@ -26,10 +28,22 @@ export const authSlice = createSlice({
             handleFulfilled(state, action)
             state.loggedIn = true
             state.token = action.payload.token
+            state.username = action.payload.username
         },
         [signIn.rejected]: (state, action) => handleRejected(state, action),
     }
 })
+
+export const handleFulfilled = (state, action) => {
+    const error = action.payload.error
+    if (error) {
+        state.status = 'not-confirmed'
+        state.error = error
+
+    } else {
+        state.status = 'succeeded'
+    }
+}
 
 export const {logOut} = authSlice.actions
 export default authSlice.reducer

@@ -13,12 +13,14 @@ const SignUpScreen = ({navigation}) => {
     const status = useSelector(state => state.signUp.status);
     const error = useSelector(state => state.signUp.error);
     const [opacity] = useState(new Animated.Value(1))
+    const email = useSelector(state => state.signUp.email)
+    const username = useSelector(state => state.signUp.username)
 
     manageFade(status, opacity)
 
     useEffect(() => {
         if (status === 'succeeded') {
-            navigation.navigate('Sign In')
+            navigation.navigate('Email verification', {email: email, username: username})
         }
     })
 

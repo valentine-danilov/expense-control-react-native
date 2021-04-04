@@ -13,7 +13,7 @@ const SignInForm = ({status, error}) => {
             password: values.password
         }))
     };
-    config.submitError = (status === 'failed') ? (error || 'Something went wrong ;(') : ''
+    config.submitError = (status !== 'succeeded') ? (error || 'Something went wrong ;(') : ''
     config.submitStatus = status;
 
     console.log('SIGN IN RENDER: ', status)
