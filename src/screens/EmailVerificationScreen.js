@@ -3,16 +3,17 @@ import {View, Text} from "react-native";
 import {useSelector} from "react-redux";
 import EmailVerificationForm from "../components/auth/email-verification/EmailVerificationForm";
 import Styles from './styles'
+import STATUS from '../util/status.util'
 
 export const EmailVerificationScreen = ({route, navigation}) => {
 
-    const status = useSelector(state => state.verifyCode.status);
-    const error = useSelector(state => state.verifyCode.error)
+    const status = useSelector(state => state.auth.userVerification.status);
+    const error = useSelector(state => state.auth.userVerification.error)
     const email = route.params.email;
     const username = route.params.username;
 
     useEffect(() => {
-        if (status === 'succeeded') {
+        if (status === STATUS.SUCCEEDED) {
             navigation.navigate('Sign In')
         }
     })
