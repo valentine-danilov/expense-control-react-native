@@ -11,11 +11,17 @@ export const signUpSlice = createSlice({
     name: 'signUp',
     initialState: {
         status: 'idle',
-        error: null
+        error: null,
+        dest: null,
+        username: null
     },
     extraReducers: {
         [signUp.pending]: (state, action) => handleLoading(state),
-        [signUp.fulfilled]: (state, action) => handleFulfilled(state, action),
+        [signUp.fulfilled]: (state, action) => {
+            handleFulfilled(state, action)
+            state.dest = action.payload.confirmationDestination;
+            state.username = action.payload.username;
+        },
         [signUp.rejected]: (state, action) => handleRejected(state, action)
     }
 })
