@@ -8,6 +8,7 @@ import Styles from "./styles";
 import ActionButton from "../components/common/button/ActionButton";
 import {isSubmitting, manageFade} from "../util/common.util";
 import STATUS from '../util/status.util'
+import Screens from '../util/screen-name.util'
 
 const SignInScreen = ({navigation}) => {
     const status = useSelector(state => state.auth.signIn.status);
@@ -19,10 +20,10 @@ const SignInScreen = ({navigation}) => {
 
     useEffect(() => {
         if (status === STATUS.SUCCEEDED) {
-            navigation.navigate('Home')
+            navigation.navigate(Screens.HOME)
         }
         if (status === STATUS.USER_NOT_CONFIRMED){
-            navigation.navigate('Email verification', {username: username})
+            navigation.navigate(Screens.EMAIL_VERIFICATION, {username: username})
         }
     })
 
@@ -30,7 +31,7 @@ const SignInScreen = ({navigation}) => {
         <Animated.View style={[Styles.container, {opacity}]} pointerEvents={isSubmitting(status) ? 'none' : 'auto'}>
             {isSubmitting(status) && <DefaultActivityIndicator/>}
             <SignInForm status={status} error={error}/>
-            <ActionButton title="Don't have an account? Sign Up now!" onPress={() => navigation.navigate('Sign Up')}/>
+            <ActionButton title="Don't have an account? Sign Up now!" onPress={() => navigation.navigate(Screens.SIGN_UP)}/>
         </Animated.View>
     )
 }

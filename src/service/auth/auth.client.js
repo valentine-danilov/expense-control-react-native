@@ -7,8 +7,11 @@ export const doVerify = async ({username, code}) => {
 export const doAuthenticate = async ({username, password}) => {
     try {
         let response = await Auth.signIn(username, password);
+        console.log(response)
         if (response.signInUserSession) {
-            return {token: response.signInUserSession.accessToken.jwtToken, user: {}}
+            const email = response.attributes.email
+            const username = response.username
+            return {token: response.signInUserSession.accessToken.jwtToken, user: {username, email}}
         }
     } catch (err) {
         console.log(err)

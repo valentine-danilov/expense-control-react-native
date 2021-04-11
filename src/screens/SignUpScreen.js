@@ -9,6 +9,7 @@ import {isSubmitting, manageFade} from "../util/common.util";
 import DefaultActivityIndicator from "../components/common/activity-indicator/DefaultActivityIndicator";
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import STATUS from '../util/status.util'
+import Screens from '../util/screen-name.util'
 
 
 const SignUpScreen = ({navigation}) => {
@@ -22,7 +23,7 @@ const SignUpScreen = ({navigation}) => {
 
     useEffect(() => {
         if (status === STATUS.SUCCEEDED) {
-            navigation.navigate('Email verification', {email: verificationDestination, username: username})
+            navigation.navigate(Screens.EMAIL_VERIFICATION, {email: verificationDestination, username: username})
         }
     })
 
@@ -32,7 +33,7 @@ const SignUpScreen = ({navigation}) => {
                 {isSubmitting(status) && <DefaultActivityIndicator/>}
                 <SignUpForm status={status} error={error}/>
                 <ActionButton title="Already have an account? Sign In now"
-                              onPress={() => navigation.navigate('Sign In')}/>
+                              onPress={() => navigation.navigate(Screens.SIGN_IN)}/>
             </Animated.View>
         </KeyboardAwareScrollView>
     )

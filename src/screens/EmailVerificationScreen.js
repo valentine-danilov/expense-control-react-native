@@ -4,6 +4,7 @@ import {useSelector} from "react-redux";
 import EmailVerificationForm from "../components/auth/email-verification/EmailVerificationForm";
 import Styles from './styles'
 import STATUS from '../util/status.util'
+import Screens from '../util/screen-name.util'
 
 export const EmailVerificationScreen = ({route, navigation}) => {
 
@@ -14,7 +15,7 @@ export const EmailVerificationScreen = ({route, navigation}) => {
 
     useEffect(() => {
         if (status === STATUS.SUCCEEDED) {
-            navigation.navigate('Sign In')
+            navigation.navigate(Screens.SIGN_IN)
         }
     })
 
@@ -22,7 +23,6 @@ export const EmailVerificationScreen = ({route, navigation}) => {
         <View style={Styles.container}>
             <Text>
                 {email ? `Email has been sent to ${email}` : "Enter verification code to confirm your email"}
-
             </Text>
             <EmailVerificationForm status={status} error={error} username={username}/>
         </View>

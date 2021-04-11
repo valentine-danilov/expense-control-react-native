@@ -9,20 +9,28 @@ import {HomeScreen} from "./src/screens/Home";
 import config from './aws-exports';
 import Amplify from '@aws-amplify/core';
 import {EmailVerificationScreen} from "./src/screens/EmailVerificationScreen";
+import Screens from './src/util/screen-name.util'
 
 Amplify.configure(config);
 
 const Stack = createStackNavigator();
 
+const setOptions = (navigation, {title, headerLeft}) => {
+    return {
+        title,
+        headerLeft
+    }
+}
+
 export default function App() {
     return (
         <Provider store={store}>
             <NavigationContainer>
-                <Stack.Navigator initialRouteName="Sign Up">
-                    <Stack.Screen name="Sign In" component={SignInScreen}/>
-                    <Stack.Screen name="Sign Up" component={SignUpScreen}/>
-                    <Stack.Screen name="Home" component={HomeScreen}/>
-                    <Stack.Screen name="Email verification" component={EmailVerificationScreen}/>
+                <Stack.Navigator initialRouteName={Screens.SIGN_IN}>
+                    <Stack.Screen name={Screens.SIGN_IN} component={SignInScreen} options={() => ({title: 'Sign In', headerLeft: null})}/>
+                    <Stack.Screen name={Screens.SIGN_UP} component={SignUpScreen} options={() => ({title: 'Sign Up', headerLeft: null})}/>
+                    <Stack.Screen name={Screens.HOME} component={HomeScreen} options={() => ({title: 'Expense Control', headerLeft: null})}/>
+                    <Stack.Screen name={Screens.EMAIL_VERIFICATION} component={EmailVerificationScreen} options={() => ({title: 'Email Verification', headerLeft: null})}/>
                 </Stack.Navigator>
             </NavigationContainer>
         </Provider>
