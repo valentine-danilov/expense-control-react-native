@@ -1,11 +1,23 @@
 import React from "react";
 import {View, Text} from "react-native";
+import Styles from './styles'
+import {useSelector} from "react-redux";
 
 export const HomeScreen = () => {
+    const loggedInUser = useSelector(state => {
+        console.log(state)
+        return state.auth.user
+    })
     return (
-        <View>
+        <View style={Styles.container}>
             <Text>
-                Successful Login!!!
+                This is going to be Home screen
+            </Text>
+            <Text>
+                Logged in user: {loggedInUser.username}
+            </Text>
+            <Text>
+                Logged in user's email: {loggedInUser.email}
             </Text>
         </View>
     )
