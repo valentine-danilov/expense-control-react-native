@@ -28,7 +28,7 @@ const SignUpScreen = ({navigation}) => {
     })
 
     return (
-        <KeyboardAwareScrollView>
+        <KeyboardAwareScrollView contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}>
             <Animated.View style={[Styles.container, {opacity}]} pointerEvents={isSubmitting(status) ? 'none' : 'auto'}>
                 {isSubmitting(status) && <DefaultActivityIndicator/>}
                 <SignUpForm status={status} error={error}/>

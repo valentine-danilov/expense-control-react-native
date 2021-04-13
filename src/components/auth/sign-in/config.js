@@ -9,12 +9,16 @@ export default {
             inputType: 'text',
             fieldPlaceholder: 'Login',
             autoFocus: true,
+            icon: 'account',
+            autoCompleteType: 'username'
         },
         {
             fieldName: 'password',
             inputType: 'text',
             fieldPlaceholder: 'Password',
-            secureTextEntry: true
+            secureTextEntry: true,
+            icon: 'lock',
+            autoCompleteType: 'password'
         }
     ]
 }

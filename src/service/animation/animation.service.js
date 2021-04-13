@@ -17,7 +17,7 @@ export const fadeOut = (opacity, toValue = 0.4, duration = 200) => {
     //await animationTimeout(200)
 }
 
-export const animatePressIn = async (value, toValue = 0.8) => {
+export const animatePressIn = async (value, toValue = 0.95) => {
     Animated.spring(value, {
         toValue: toValue,
         useNativeDriver: true
@@ -25,7 +25,7 @@ export const animatePressIn = async (value, toValue = 0.8) => {
     await animationTimeout(50)
 }
 
-export const animatePressOut = async (value, toValue = 1, friction = 3, tension = 3) => {
+export const animatePressOut = async (value, toValue = 1, friction = 100, tension = 100) => {
     Animated.spring(value, {
         toValue: toValue,
         useNativeDriver: true,

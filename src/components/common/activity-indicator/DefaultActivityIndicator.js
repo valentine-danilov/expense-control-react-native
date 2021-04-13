@@ -1,8 +1,9 @@
 import React from "react";
 import styles from "./styles";
-import {ActivityIndicator, View} from "react-native";
+import {View} from "react-native";
+import {ActivityIndicator} from "react-native-paper";
 
 export default () =>
     <View style={styles.activityIndicatorContainer}>
-        <ActivityIndicator size="large" color="#3F5EFB"/>
+        <ActivityIndicator animating={true} size="large" color="#3F5EFB"/>
     </View>

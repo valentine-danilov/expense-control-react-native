@@ -10,7 +10,7 @@ export default StyleSheet.create({
     },
     error: {
         marginBottom: 15,
-        color: 'red',
-        height: 17.5,
+        fontSize: 15,
+        fontWeight: 'bold'
     }
 })

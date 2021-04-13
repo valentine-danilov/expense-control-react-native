@@ -1,30 +1,11 @@
-import React, {useState} from "react";
-import {TouchableWithoutFeedback, Text, Animated} from 'react-native';
-import {animatePressIn, animatePressOut} from '../../../service/animation/animation.service'
-import styles from "./styles";
+import React from "react";
+import {Button} from 'react-native-paper'
 
-const ActionButton = ({title, onPress, style}) => {
-    const [animatedValue] = useState(new Animated.Value(1));
-
-    const handlePressIn = async () => {
-        await animatePressIn(animatedValue)
-    }
-
-    const handlePressOut = async () => {
-        await animatePressOut(animatedValue)
-        onPress()
-    }
-
-    const animationStyle = {
-        transform: [{scale: animatedValue}]
-    }
-
+const ActionButton = ({title, onPress}) => {
     return (
-        <TouchableWithoutFeedback onPressIn={handlePressIn} onPressOut={handlePressOut}>
-            <Animated.View style={[styles.container, animationStyle, style]}>
-                <Text style={styles.text}>{title}</Text>
-            </Animated.View>
-        </TouchableWithoutFeedback>
+        <Button mode="contained" onPress={onPress} labelStyle={{color: '#8c8c8c'}}>
+            {title}
+        </Button>
     )
 }
 

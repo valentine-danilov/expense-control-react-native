@@ -6,6 +6,8 @@ import {Formik} from 'formik';
 import styles from "./styles";
 import FormTextInput from "./input/FormTextInput";
 import ActionButton from "../button/ActionButton";
+import {HelperText} from "react-native-paper";
+import PasswordInput from "./input/PasswordInput";
 
 const Form = ({submitFunction, validationSchema, submitButtonTitle, formFields, submitError}) => {
     const initialValues = getInitialValues(formFields)
@@ -18,7 +20,8 @@ const Form = ({submitFunction, validationSchema, submitButtonTitle, formFields, 
                 ({handleSubmit, handleChange, errors, touched}) => {
                     return (
                         <View style={styles.container}>
-                            <Text style={styles.error}>{submitError}</Text>
+                            <HelperText style={styles.error} type="error"
+                                        visible={!!submitError}>{submitError}</HelperText>
                             <View>
                                 {
                                     formFieldsToInputs(formFields, handleChange, errors, touched)
@@ -31,9 +34,9 @@ const Form = ({submitFunction, validationSchema, submitButtonTitle, formFields, 
                         </View>);
                 }
             }
-        </Formik>
-    )
-}
+                </Formik>
+                )
+            }
 
 const getInitialValues = formFields => {
     if (formFields) {
@@ -58,6 +61,17 @@ const formFieldsToInputs = (formFields, handleChange, errors, touched) => {
 
 const formFieldToTextInput = (formField, handleChange, errors, touched) => {
     const error = (errors[formField.fieldName] && touched[formField.fieldName]) ? errors[formField.fieldName] : '';
+
+    if (formField.secureTextEntry) {
+        return (
+            <PasswordInput
+                key={formField.fieldName}
+                {...formField}
+                handleChange={handleChange}
+                error={error}
+            />
+        )
+    }
     return (
         <FormTextInput
             key={formField.fieldName}
@@ -82,7 +96,8 @@ Form.propTypes = {
         autoCompleteType: PropTypes.oneOf(['off', 'username', 'password', 'email', 'name', 'tel', 'street-address', 'postal-code', 'cc-number', 'cc-csc', 'cc-exp', 'cc-exp-month', 'cc-exp-year']),
         autoFocus: PropTypes.bool,
         returnKeyType: PropTypes.oneOf(['done', 'go', 'next', 'search', 'send']),
-        secureTextEntry: PropTypes.bool
+        secureTextEntry: PropTypes.bool,
+        icon: PropTypes.string
     }))
 }
 

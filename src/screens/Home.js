@@ -1,9 +1,9 @@
 import React from "react";
-import {View, Text} from "react-native";
+import {Text, View} from "react-native";
 import Styles from './styles'
 import {useSelector} from "react-redux";
 
-export const HomeScreen = () => {
+const HomeScreen = () => {
     const loggedInUser = useSelector(state => {
         console.log(state)
         return state.auth.user
@@ -22,3 +22,5 @@ export const HomeScreen = () => {
         </View>
     )
 }
+
+export default HomeScreen;
