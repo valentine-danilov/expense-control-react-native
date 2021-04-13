@@ -8,13 +8,13 @@ import Screens from '../util/screen-name.util'
 
 const EmailVerificationScreen = ({route, navigation}) => {
 
-    const status = useSelector(state => state.auth.userVerification.status);
-    const error = useSelector(state => state.auth.userVerification.error)
+    const status = useSelector(state => state.auth.status);
+    const error = useSelector(state => state.auth.error)
     const email = route.params.email;
     const username = route.params.username;
 
     useEffect(() => {
-        if (status === STATUS.SUCCEEDED) {
+        if (status === STATUS.EMAIL_VERIFIED) {
             navigation.navigate(Screens.SIGN_IN)
         }
     })

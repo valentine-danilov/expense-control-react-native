@@ -6,19 +6,10 @@ export const authSlice = createSlice({
     name: 'auth',
     initialState: {
         userVerification: {
-            status: STATUS.IDLE,
-            error: null,
             code: null,
             confirmationDestination: null
         },
-        signUp: {
-            status: STATUS.IDLE,
-            error: null,
-        },
-        signIn: {
-            status: STATUS.IDLE,
-            error: null
-        },
+        status: STATUS.IDLE,
         user: {},
         loggedIn: false,
         token: null,

@@ -1,13 +1,13 @@
 import STATUS from './status.util'
 
-export const handleLoading = (state, prefix) => {
-    state[prefix].status = STATUS.LOADING;
+export const handleLoading = (state) => {
+    state.status = STATUS.LOADING;
 }
 
 export const handleFulfilled = (state, prefix, action) => {
     const error = action.payload.error
     if (error) {
-        state[prefix].status = STATUS.FAILED
+        state.status = STATUS.FAILED
         state[prefix].error = error
 
     } else {

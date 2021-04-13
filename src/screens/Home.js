@@ -5,7 +5,6 @@ import {useSelector} from "react-redux";
 
 const HomeScreen = () => {
     const loggedInUser = useSelector(state => {
-        console.log(state)
         return state.auth.user
     })
     return (

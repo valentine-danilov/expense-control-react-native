@@ -7,13 +7,13 @@ import DefaultActivityIndicator from "../components/common/activity-indicator/De
 import Styles from "./styles";
 import ActionButton from "../components/common/button/ActionButton";
 import {isSubmitting, manageFade} from "../util/common.util";
-import STATUS from '../util/status.util'
+import Status from '../util/status.util'
 import Screens from '../util/screen-name.util'
 import {useNavigation} from "@react-navigation/native";
 
 const SignInScreen = () => {
-    const status = useSelector(state => state.auth.signIn.status);
-    const error = useSelector(state => state.auth.signIn.error)
+    const status = useSelector(state => state.auth.status);
+    const error = useSelector(state => state.auth.error)
     const username = useSelector(state => state.auth.user.username)
     const [opacity] = useState(new Animated.Value(1))
 
@@ -22,13 +22,13 @@ const SignInScreen = () => {
     const navigation = useNavigation()
 
     useEffect(() => {
-        if (status === STATUS.SUCCEEDED) {
+        if (status === Status.LOGGED_IN) {
             navigation.reset({
                 index: 0,
                 routes: [{name: Screens.HOME}]
             })
         }
-        if (status === STATUS.USER_NOT_CONFIRMED){
+        if (status === Status.USER_NOT_CONFIRMED){
             navigation.navigate(Screens.EMAIL_VERIFICATION, {username: username})
         }
     })
