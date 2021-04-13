@@ -8,8 +8,10 @@ import Styles from "./styles";
 import ActionButton from "../components/common/button/ActionButton";
 import {isSubmitting, manageFade} from "../util/common.util";
 import STATUS from '../util/status.util'
+import Screens from '../util/screen-name.util'
+import {useNavigation} from "@react-navigation/native";
 
-const SignInScreen = ({navigation}) => {
+const SignInScreen = () => {
     const status = useSelector(state => state.auth.signIn.status);
     const error = useSelector(state => state.auth.signIn.error)
     const username = useSelector(state => state.auth.user.username)
@@ -17,20 +19,26 @@ const SignInScreen = ({navigation}) => {
 
     manageFade(status, opacity)
 
+    const navigation = useNavigation()
+
     useEffect(() => {
         if (status === STATUS.SUCCEEDED) {
-            navigation.navigate('Home')
+            navigation.reset({
+                index: 0,
+                routes: [{name: Screens.HOME}]
+            })
         }
         if (status === STATUS.USER_NOT_CONFIRMED){
-            navigation.navigate('Email verification', {username: username})
+            navigation.navigate(Screens.EMAIL_VERIFICATION, {username: username})
         }
     })
 
     return (
+
         <Animated.View style={[Styles.container, {opacity}]} pointerEvents={isSubmitting(status) ? 'none' : 'auto'}>
             {isSubmitting(status) && <DefaultActivityIndicator/>}
             <SignInForm status={status} error={error}/>
-            <ActionButton title="Don't have an account? Sign Up now!" onPress={() => navigation.navigate('Sign Up')}/>
+            <ActionButton title="Don't have an account? Sign Up now!" onPress={() => navigation.navigate(Screens.SIGN_UP)}/>
         </Animated.View>
     )
 }

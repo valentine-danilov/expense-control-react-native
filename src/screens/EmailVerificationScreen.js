@@ -5,7 +5,7 @@ import EmailVerificationForm from "../components/auth/email-verification/EmailVe
 import Styles from './styles'
 import STATUS from '../util/status.util'
 
-export const EmailVerificationScreen = ({route, navigation}) => {
+const EmailVerificationScreen = ({route, navigation}) => {
 
     const status = useSelector(state => state.auth.userVerification.status);
     const error = useSelector(state => state.auth.userVerification.error)
@@ -28,3 +28,5 @@ export const EmailVerificationScreen = ({route, navigation}) => {
         </View>
     )
 }
+
+export default EmailVerificationScreen;
