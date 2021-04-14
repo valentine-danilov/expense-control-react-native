@@ -1,21 +1,22 @@
-import { StatusBar } from 'expo-status-bar';
+import {Amplify} from "aws-amplify";
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {Provider} from "react-redux";
+import {Provider as PaperProvider} from 'react-native-paper'
+
+import {store} from "./src/store/store";
+import AuthNavigationContainer from "./src/navigation/auth/AuthNavigationContainer";
+import cognitoConfig from './amplify.config'
+import applicationTheme from './app.theme'
+
+
+Amplify.configure(cognitoConfig)
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Provider store={store}>
+      <PaperProvider theme={applicationTheme}>
+        <AuthNavigationContainer/>
+      </PaperProvider>
+    </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
