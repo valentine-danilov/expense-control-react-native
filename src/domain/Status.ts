@@ -1,0 +1,1 @@
+export type Status = 'idle' | 'pending' | 'failed' | 'signed-in' | 'not-verified' | 'verified'
