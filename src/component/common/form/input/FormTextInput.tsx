@@ -19,7 +19,9 @@ const FormTextInput : React.FC<FormInputProps> = (props) => (
                 props.icon && <TextInput.Icon style={{marginTop: 10}} name={props.icon}/>
             }
         />
-        <HelperText style={Styles.error} type="error" visible={!!props.error}>{props.error}</HelperText>
+        <View style={{flexDirection: 'row'}}>
+            <HelperText style={Styles.error} type="error" visible={!!props.error}>{props.error}</HelperText>
+        </View>
     </View>
 )
 

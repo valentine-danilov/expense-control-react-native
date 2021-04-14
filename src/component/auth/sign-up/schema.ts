@@ -9,8 +9,16 @@ export default Yup.object().shape({
         .email('Invalid Email')
         .required('Field is required'),
     password: Yup.string()
-        .matches(/[A-Za-z0-9]{8,50}/)
+        .min(8, 'Password should have at least 8 symbols')
+        .max(50, 'Password should have no more then 50 symbols')
+        .matches(/[A-Za-z0-9_!]{8,50}/, "Password should contain latin characters, digits, ! and _")
         .required('Field is required'),
     repeatedPassword: Yup.string()
-        .required('Passwords does not match')
+        .when('password', {
+            is: (value: string) => (value && value.length > 0),
+            then: Yup.string().oneOf(
+                [Yup.ref('password')],
+                "Passwords do not match"
+            )
+        })
 })

@@ -7,6 +7,8 @@ export const Styles = StyleSheet.create({
         paddingHorizontal: 5
     },
     error: {
-        marginBottom: 5
+        marginBottom: 5,
+        width: 300,
+        flexShrink: 1
     }
 })
