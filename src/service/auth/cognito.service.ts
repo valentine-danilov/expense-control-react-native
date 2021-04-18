@@ -1,13 +1,12 @@
 import Auth from '@aws-amplify/auth';
 import {CognitoUser, CognitoUserSession, ISignUpResult} from "amazon-cognito-identity-js";
 import {User} from "../../domain/auth/User";
-import {AuthenticationException} from "../../exception/AuthenticationException";
 
 export const doSignIn = async (username: string, password: string) => {
     let cognitoUser: CognitoUser = await Auth.signIn(username, password);
     let session = cognitoUser.getSignInUserSession();
-    const userInfo = await Auth.currentUserInfo()
     if (session && session.isValid()) {
+        const userInfo = await Auth.currentUserInfo()
         const loggedInUser = getUserInfo(userInfo, session);
         console.log(loggedInUser)
         return loggedInUser
@@ -18,7 +17,6 @@ export const doSignIn = async (username: string, password: string) => {
 
 export const doSignUp = async (username: string, email: string, password: string) => {
     let signUpResult: ISignUpResult = await Auth.signUp({username, password, attributes: {email}})
-    console.log(signUpResult)
     return signUpResultToUser(signUpResult)
 }
 
@@ -39,7 +37,7 @@ const signUpResultToUser = (signUpResult: ISignUpResult): User => {
         sub: signUpResult.userSub,
         username: signUpResult.user.getUsername(),
         verificationDestination: signUpResult.codeDeliveryDetails.Destination
-    }
+    } as User
 }
 
 const getUserInfo = (userInfo: any, userSession: CognitoUserSession): User => {
