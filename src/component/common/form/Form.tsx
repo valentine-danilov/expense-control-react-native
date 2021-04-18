@@ -4,38 +4,25 @@ import {Formik, FormikErrors, FormikValues} from 'formik';
 
 import {Styles} from "./styles";
 import FormTextInput from "./input/FormTextInput";
+import PasswordInput from "./input/PasswordInput";
 import ActionButton from "../button/ActionButton";
 import {HelperText} from "react-native-paper";
-import PasswordInput from "./input/PasswordInput";
 import {FormProps} from "../../../domain/props/form/FormProps";
 import {FormField} from "../../../domain/props/form/FormField";
 
 const Form: React.FC<FormProps> = (props) => {
     const initialValues = getInitialValues(props.formFields)
     return (
-        <Formik
-            onSubmit={values => props.submitFunction(values)}
-            initialValues={initialValues}
-            validationSchema={props.validationSchema}>
-            {
-                ({handleSubmit, handleChange, errors, touched}) => {
-                    return (
-                        <View style={Styles.container}>
-                            <HelperText style={Styles.error} type="error"
-                                        visible={!!props.submitError}>{props.submitError}</HelperText>
-                            <View>
-                                {
-                                    formFieldsToInputs(props.formFields, handleChange, errors, touched)
-                                }
-                            </View>
-                            <ActionButton
-                                title={props.submitButtonTitle || 'Submit'}
-                                onPress={handleSubmit}
-                            />
-                        </View>
-                    );
-                }
-            }
+        <Formik initialValues={initialValues} validationSchema={props.validationSchema} onSubmit={values => props.submitFunction(values)}>
+            {({handleSubmit, handleChange, errors, touched}) => {
+                return (
+                    <View style={[Styles.container, props.style]}>
+                        <HelperText style={Styles.error} type="error" visible={!!props.submitError}>{props.submitError}</HelperText>
+                        <View>{formFieldsToInputs(props.formFields, handleChange, errors, touched)}</View>
+                        <ActionButton title={props.submitButtonTitle || 'Submit'} onPress={handleSubmit}/>
+                    </View>
+                )
+            }}
         </Formik>
     )
 }
@@ -74,13 +61,10 @@ const formFieldToTextInput = (
 ) => {
     const error = (errors[formField.fieldName] && touched[formField.fieldName]) ? errors[formField.fieldName]?.toString() : '';
     if (formField.secureTextEntry) {
-        return (
-            <PasswordInput key={formField.fieldName} {...formField} handleChange={handleChange} error={error}/>
-        )
+        return <PasswordInput key={formField.fieldName} {...formField} handleChange={handleChange} error={error}/>
+
     }
-    return (
-        <FormTextInput key={formField.fieldName}{...formField} handleChange={handleChange} error={error}/>
-    )
+    return <FormTextInput key={formField.fieldName} {...formField} handleChange={handleChange} error={error}/>
 }
 
 export default Form;

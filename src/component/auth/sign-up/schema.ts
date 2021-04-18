@@ -14,8 +14,9 @@ export default Yup.object().shape({
         .matches(/[A-Za-z0-9_!]{8,50}/, "Password should contain latin characters, digits, ! and _")
         .required('Field is required'),
     repeatedPassword: Yup.string()
+        .required("Please, repeat password")
         .when('password', {
-            is: (value: string) => (value && value.length > 0),
+            is: (value: string) => !!value,
             then: Yup.string().oneOf(
                 [Yup.ref('password')],
                 "Passwords do not match"

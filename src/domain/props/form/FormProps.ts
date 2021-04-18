@@ -6,4 +6,5 @@ export interface FormProps {
     validationSchema: any,
     submitButtonTitle?: string,
     submitError?: string
+    style?: any
 }

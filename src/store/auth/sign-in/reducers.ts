@@ -12,7 +12,10 @@ export default (builder: ActionReducerMapBuilder<AuthState>) => {
         state.user = action.payload
     })
     builder.addCase(signIn.rejected, ((state, action) => {
-        state.status = 'failed'
+        state.status = action.error.code === 'UserNotConfirmedException' ? 'not-verified' : 'failed'
         state.error = action.error.message
+        state.user = {
+            username: action.meta.arg.username
+        }
     }))
 }

@@ -12,7 +12,7 @@ export const getConfig = (submitFunction: (values: any) => void, submitError: st
                 fieldName: 'code',
                 inputType: 'text',
                 fieldPlaceholder: 'Enter verification code',
-                autoFocus: true,
+                autoFocus: true
             }
         ]
     }

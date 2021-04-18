@@ -12,23 +12,27 @@ export const getConfig = (submitFunction: (values: any) => void, submitError: st
                 fieldName: 'login',
                 inputType: 'text',
                 fieldPlaceholder: 'Login',
+                icon: 'account'
             },
             {
                 fieldName: 'email',
                 inputType: 'text',
-                fieldPlaceholder: 'E-Mail'
+                fieldPlaceholder: 'E-Mail',
+                icon: 'email'
             },
             {
                 fieldName: 'password',
                 inputType: 'text',
                 fieldPlaceholder: 'Password',
-                secureTextEntry: true
+                secureTextEntry: true,
+                icon: 'lock'
             },
             {
                 fieldName: 'repeatedPassword',
                 inputType: 'text',
                 fieldPlaceholder: 'Repeat Password',
-                secureTextEntry: true
+                secureTextEntry: true,
+                icon: 'repeat'
             }
         ]
     }

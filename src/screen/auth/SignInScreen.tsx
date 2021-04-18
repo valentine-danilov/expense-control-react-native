@@ -25,6 +25,8 @@ const SignInScreen = () => {
                 index: 0,
                 routes: [{name: 'Home'}]
             })
+        } else if (status === Statuses.NOT_VERIFIED) {
+            navigation.navigate('Verify Email')
         }
     })
 

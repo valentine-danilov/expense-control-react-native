@@ -4,7 +4,7 @@ import {ActionButtonProps} from "./ActionButtonProps";
 
 export const ActionButton: React.FC<ActionButtonProps>= (props) => {
     return (
-        <Button mode="contained" onPress={props.onPress} labelStyle={{color: '#8c8c8c'}}>
+        <Button mode="contained" onPress={props.onPress} labelStyle={{color: '#8c8c8c'}} style={props.style}>
             {props.title}
         </Button>
     );

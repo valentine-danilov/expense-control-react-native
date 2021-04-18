@@ -1,6 +1,7 @@
 import Auth from '@aws-amplify/auth';
 import {CognitoUser, CognitoUserSession, ISignUpResult} from "amazon-cognito-identity-js";
 import {User} from "../../domain/auth/User";
+import {AuthenticationException} from "../../exception/AuthenticationException";
 
 export const doSignIn = async (username: string, password: string) => {
     let cognitoUser: CognitoUser = await Auth.signIn(username, password);
